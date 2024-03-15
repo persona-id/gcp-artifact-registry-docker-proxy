@@ -33,9 +33,28 @@ changelog:
   use: github
 
 dockers:
+  - build_flag_templates:
+      - "--platform=linux/amd64"
+      - "--pull"
+    image_templates:
+      - "ghcr.io/persona-id/{{.ProjectName}}:{{ .Tag }}-amd64"
+    goarch: amd64
+    skip_push: false
+    use: buildx
+  - build_flag_templates:
+      - "--platform=linux/arm64/v8"
+      - "--pull"
+    image_templates:
+      - "ghcr.io/persona-id/{{.ProjectName}}:{{ .Tag }}-arm64v8"
+    goarch: arm64
+    skip_push: false
+    use: buildx
+
+docker_manifests:
   - image_templates:
-      - "ghcr.io/persona-id/{{.ProjectName}}:latest"
-      - "ghcr.io/persona-id/{{.ProjectName}}:{{ .Tag }}"
+      - "ghcr.io/persona-id/{{.ProjectName}}:{{ .Tag }}-amd64"
+      - "ghcr.io/persona-id/{{.ProjectName}}:{{ .Tag }}-arm64v8"
+    name_template: "ghcr.io/persona-id/{{.ProjectName}}:{{ .Tag }}"
     skip_push: false
 
 project_name: gcp-artifact-registry-docker-proxy
