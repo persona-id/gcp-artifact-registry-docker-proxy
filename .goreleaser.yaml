@@ -27,6 +27,7 @@ changelog:
     exclude:
       - "^docs:"
       - "^test:"
+      - "^Merge pull request"
   sort: asc
   use: github
 
