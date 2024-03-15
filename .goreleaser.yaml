@@ -56,5 +56,10 @@ docker_manifests:
       - "ghcr.io/persona-id/{{.ProjectName}}:{{ .Tag }}-arm64v8"
     name_template: "ghcr.io/persona-id/{{.ProjectName}}:{{ .Tag }}"
     skip_push: false
+  - image_templates:
+      - "ghcr.io/persona-id/{{.ProjectName}}:{{ .Tag }}-amd64"
+      - "ghcr.io/persona-id/{{.ProjectName}}:{{ .Tag }}-arm64v8"
+    name_template: "ghcr.io/persona-id/{{.ProjectName}}:latest"
+    skip_push: false
 
 project_name: gcp-artifact-registry-docker-proxy
