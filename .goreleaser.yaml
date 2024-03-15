@@ -28,6 +28,7 @@ changelog:
       - "^docs:"
       - "^test:"
       - "^Merge pull request"
+      - "^Release"
   sort: asc
   use: github
 
