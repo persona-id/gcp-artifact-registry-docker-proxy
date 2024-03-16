@@ -104,16 +104,16 @@ func TestProxy(t *testing.T) {
 			MirrorURL:        "/v2/example-project/example-repo/library/hello-world/manifests/latest",
 		},
 		{
-			CallerURL:  "/example-project/example-repo/v2library/hello-world/manifests/latest",
-			StatusCode: 404,
+			CallerURL: "/example-project/example-repo/v2library/hello-world/manifests/latest",
+			MirrorURL: "/example-project/example-repo/v2library/hello-world/manifests/latest",
 		},
 		{
-			CallerURL:  "/example-project/example-repo/abc",
-			StatusCode: 404,
+			CallerURL: "/example-project/example-repo/abc",
+			MirrorURL: "/example-project/example-repo/abc",
 		},
 		{
-			CallerURL:  "/v2/example-project/example-repo/library/hello-world/manifests/latest",
-			StatusCode: 404,
+			CallerURL: "/v2/example-project/example-repo/library/hello-world/manifests/latest",
+			MirrorURL: "/v2/example-project/example-repo/library/hello-world/manifests/latest",
 		},
 	}
 
