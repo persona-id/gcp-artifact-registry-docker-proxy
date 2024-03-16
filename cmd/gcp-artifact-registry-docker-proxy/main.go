@@ -73,6 +73,14 @@ func main() {
 		proxy.ServeHTTP(w, r)
 	})
 
+	// GCP can use any number of paths to support the registry so just directly proxy
+	// anything that didn't match above here without adding authentication.
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		r.Host = remote.Host
+
+		proxy.ServeHTTP(w, r)
+	})
+
 	slog.Info("Starting server...", slog.Any("addr", config.Listen))
 
 	err = http.ListenAndServe(config.Listen, nil)
