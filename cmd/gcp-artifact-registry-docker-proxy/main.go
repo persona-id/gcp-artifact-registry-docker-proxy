@@ -11,14 +11,16 @@ import (
 	"os"
 	"strings"
 
+	"cloud.google.com/go/compute/metadata"
 	"github.com/spf13/pflag"
 	"github.com/spf13/viper"
 	auth "golang.org/x/oauth2/google"
 )
 
 type Config struct {
-	Listen   string
-	Registry string
+	Listen       string `mapstructure:"listen"`
+	OnlyMetadata bool   `mapstructure:"only-metadata"`
+	Registry     string `mapstructure:"registry"`
 }
 
 func main() {
@@ -46,10 +48,28 @@ func main() {
 	proxy := httputil.NewSingleHostReverseProxy(remote)
 
 	// Configure our GCP authentication.
-	gcpCredentials, err := auth.FindDefaultCredentials(context.Background(), "https://www.googleapis.com/auth/cloud-platform")
-	if err != nil {
-		slog.Error("Unable to setup GCP credentials", slog.Any("err", err))
-		os.Exit(1)
+	gcpScopes := []string{"https://www.googleapis.com/auth/cloud-platform"}
+
+	var gcpCredentials *auth.Credentials
+
+	if config.OnlyMetadata {
+		if !metadata.OnGCE() {
+			slog.Error("Not running on GCE instance to use metadata server")
+			os.Exit(1)
+		}
+
+		id, _ := metadata.ProjectID()
+
+		gcpCredentials = &auth.Credentials{
+			ProjectID:   id,
+			TokenSource: auth.ComputeTokenSource("", gcpScopes...),
+		}
+	} else {
+		gcpCredentials, err = auth.FindDefaultCredentials(context.Background(), gcpScopes...)
+		if err != nil {
+			slog.Error("Unable to setup GCP credentials", slog.Any("err", err))
+			os.Exit(1)
+		}
 	}
 
 	if _, err = gcpCredentials.TokenSource.Token(); err != nil {
@@ -99,6 +119,7 @@ func parseConfiguration() (*Config, error) {
 	viper.GetViper().SetDefault("listen", "localhost:8000")
 
 	pflag.String("listen", "", "Address for the mirror to listen on.")
+	pflag.Bool("only-metadata", false, "Only rely upon the GCE metadata server for authentication.")
 	pflag.String("registry", "", "URL of the registry to proxy requests to.")
 
 	pflag.Parse()
