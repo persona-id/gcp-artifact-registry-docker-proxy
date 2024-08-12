@@ -58,7 +58,7 @@ func main() {
 			os.Exit(1)
 		}
 
-		id, _ := metadata.ProjectID()
+		id, _ := metadata.ProjectIDWithContext(context.Background())
 
 		gcpCredentials = &auth.Credentials{
 			ProjectID:   id,
