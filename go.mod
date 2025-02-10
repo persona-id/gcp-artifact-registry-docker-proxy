@@ -6,7 +6,7 @@ require (
 	cloud.google.com/go/compute/metadata v0.6.0
 	github.com/spf13/pflag v1.0.6
 	github.com/spf13/viper v1.19.0
-	golang.org/x/oauth2 v0.25.0
+	golang.org/x/oauth2 v0.26.0
 )
 
 require (
