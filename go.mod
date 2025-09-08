@@ -1,12 +1,12 @@
 module github.com/persona-id/gcp-artifact-registry-docker-proxy
 
-go 1.21
+go 1.24.0
 
 require (
 	cloud.google.com/go/compute/metadata v0.6.0
 	github.com/spf13/pflag v1.0.6
 	github.com/spf13/viper v1.19.0
-	golang.org/x/oauth2 v0.26.0
+	golang.org/x/oauth2 v0.31.0
 )
 
 require (
